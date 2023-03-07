@@ -1,22 +1,18 @@
 {
   "name": "c4ds-sketch-3",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:dfarooq610/c4ds-sketch-3.git",
+  "author": "Danish Farooq <farooq.d@northeastern.edu>",
+  "license": "MIT",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@types/node": "18.14.6",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.35.0",
-    "eslint-config-next": "13.2.3",
-    "next": "13.2.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "4.9.5"
+    "start": "yarn --cwd backend start",
+    "build": "yarn --cwd frontend build"
   }
 }
