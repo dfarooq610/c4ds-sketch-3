@@ -5,6 +5,9 @@ const CONFIG = require('@c4ds-sketch-3/config');
 const app = express();
 
 // TODO: Write API
+app.get('/test', function(req, res) {
+    res.send('Hello World!')
+});
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
