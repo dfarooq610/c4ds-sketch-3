@@ -1,6 +1,6 @@
 import { getSkiSubtitle } from "../../services/utils";
 import { useRouter } from "next/router";
-import NeonSkiSign from "../../components/NeonSkiSign";
+import NeonSkiSign from "../../components/home/NeonSkiSign";
 import { GlassButton } from "../../components/GlassButton";
 
 export default function Home() {
