@@ -1,19 +1,19 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Lora } from "next/font/google";
+import { Slabo_27px } from "next/font/google";
 
 // pages/_app.js
-const lora = Lora({
-  weight: ["400", "500", "700"],
-  style: ["normal", "italic"],
+const slabo = Slabo_27px({
+  weight: ["400"],
+  style: ["normal"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-lora",
+  variable: "--font-slabo",
 });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={`${lora.variable} font-lora`}>
+    <main className={`${slabo.variable} font-slabo`}>
       <Component {...pageProps} />
     </main>
   );

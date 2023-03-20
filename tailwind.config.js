@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       fontFamily: {
         tiltNeon: ["Tilt Neon", "sans-serif"],
-        lora: ["var(--font-lora)", "serif"],
+        slabo: ["var(--font-slabo)", "serif"],
       }
     },
   },
