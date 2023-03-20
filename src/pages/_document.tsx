@@ -15,7 +15,7 @@ export default function Document() {
             
         <meta
           name="og:image"
-          content="file:///Users/lyu/Desktop/Screen%20Shot%202023-03-20%20at%2014.16.44.png"
+          content="https://github.com/dfarooq610/c4ds-sketch-3/blob/main/assets/neon-ski-icon.png?raw=true"
         />
             
         <meta name="og:type" content="article" />
