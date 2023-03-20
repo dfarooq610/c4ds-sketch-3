@@ -22,7 +22,7 @@ export default function Home() {
       {/* from https://devdojo.com/tailwindcss/buttons */}
       <button
         onClick={() => router.push("/quiz")}
-        className="relative inline-flex items-center justify-center lg:text-4xl text-2xl max-w-prose mt-16 mb-4  px-10 py-6 overflow-hidden font-bold font-tiltNeon text-white hover:text-[#0a1b35] rounded-md shadow-2xl group"
+        className="relative inline-flex items-center justify-center lg:text-4xl text-2xl max-w-prose mt-12 mb-3  px-10 py-6 overflow-hidden font-bold font-tiltNeon text-white hover:text-[#0a1b35] rounded-md shadow-2xl group"
       >
         <span
           className="absolute inset-0 w-full h-full transition duration-500 ease-out opacity-0 

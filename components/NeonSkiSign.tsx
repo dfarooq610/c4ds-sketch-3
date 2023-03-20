@@ -1,7 +1,7 @@
 export default function NeonSkiSign() {
   return (
     <svg
-      className="p-8 max-w-3xl mx-auto"
+      className="p-8 max-w-2xl mx-auto"
       viewBox="0 0 745 636"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
