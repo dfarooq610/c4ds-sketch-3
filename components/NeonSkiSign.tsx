@@ -7,7 +7,8 @@ export default function NeonSkiSign() {
       viewBox="0 0 745 636"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      version="1.1">
+      version="1.1"
+    >
       <mask
         id="path-1-outside-1_7_16"
         maskUnits="userSpaceOnUse"
