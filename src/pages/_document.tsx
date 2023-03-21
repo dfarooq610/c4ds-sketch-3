@@ -4,7 +4,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           name="og-title"
           content="So you want to plan a ski trip in New England"
@@ -28,7 +27,6 @@ export default function Document() {
           name="author"
           content="Danish Farooq and Xiangpei Lyu, Northeastern University"
         />
-        <title>So you want to plan a ski trip in New England</title>
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
         <link
           rel="preconnect"

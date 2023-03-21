@@ -18,7 +18,7 @@ export default function Home() {
       <NeonSkiSign />
       {/* adapted from https://devdojo.com/tailwindcss/buttons */}
       <GlassButton
-        onClick={() => router.push("/quiz")}
+        onClick={() => router.push("/recs")}
         text="Let's give you some recs"
       />
       <a

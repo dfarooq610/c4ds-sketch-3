@@ -1,6 +1,5 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
-import LocationQuestion from "../../components/quiz/LocationQuestion";
-import Questionairre from "../../components/quiz/MultipleChoiceQuestions";
 import { SkiQuestionairre } from "../../components/quiz/SkiQuestionairre";
 import ResortsList from "../../components/results/ResortsList";
 import { questions } from "../../services/questions";
@@ -11,6 +10,7 @@ export default function Quiz() {
     Number.MIN_SAFE_INTEGER,
   ]);
   const [answers, setAnswers] = useState<string[]>(questions.map(() => ""));
+  const router = useRouter();
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -32,22 +32,29 @@ export default function Quiz() {
   };
 
   const handleSubmit = () => {
-    console.log(answers);
+    router.push({
+      pathname: "/results",
+      query: {
+        latitude: userLocation[0],
+        longitude: userLocation[1],
+        level: answers[0],
+        priceRange: answers[1],
+        hasEquipment: answers[2] === "Yes",
+        travelPreference: questions[3].options.indexOf(answers[3]),
+        isWeekendTrip: answers[4] === "During the weekend",
+      },
+    });
   };
 
   return (
     <div className="flex flex-col h-screen">
-      {answers.includes("") ? (
-        <SkiQuestionairre
-          userLocation={userLocation}
-          getLocation={getLocation}
-          answers={answers}
-          setAnswers={setAnswers}
-          handleSubmit={handleSubmit}
-        />
-      ) : (
-        <ResortsList />
-      )}
+      <SkiQuestionairre
+        userLocation={userLocation}
+        getLocation={getLocation}
+        answers={answers}
+        setAnswers={setAnswers}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 }
