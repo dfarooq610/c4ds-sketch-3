@@ -200,3 +200,4 @@ export const NewEnglandSkiResorts: SkiResort[] = [
       "Sunday River Ski Resort is a ski resort located in Newry, Maine, USA. The resort covers over 870 acres of land, with over 135 trails and glades, and is known for its varied terrain and excellent snow conditions. Sunday River has a vertical drop of 2,340 feet and runs ranging from gentle beginner slopes to challenging expert terrain. The resort also offers a variety of other winter activities, including cross-country skiing, snowshoeing, and ice skating.",
   },
 ];
+

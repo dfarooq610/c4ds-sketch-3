@@ -5,38 +5,30 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            
         <meta
           name="og-title"
           content="So you want to plan a ski trip in New England"
         />
-            
         <meta name="og:url" content="https://c4ds-sketch-3.vercel.app/" />
-            
         <meta
           name="og:image"
           content="https://github.com/dfarooq610/c4ds-sketch-3/blob/main/assets/neon-ski-icon.png?raw=true"
         />
-            
         <meta name="og:type" content="article" />
-            
         <meta
           name="og:description"
           content="An interactive poll that helps you to find the best fit ski resort."
         />
-            
         <meta name="og:locale" content="en_US" />
-            
         <meta
           name="keywords"
           content="New England, Ski Resorts, Lift Ticket, weather, temperature"
         />
-            
         <meta
           name="author"
           content="Danish Farooq and Xiangpei Lyu, Northeastern University"
         />
-            <title>So you want to plan a ski trip in New England</title>
+        <title>So you want to plan a ski trip in New England</title>
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
         <link
           rel="preconnect"

@@ -4,7 +4,7 @@ export default function NeonSkiSign() {
     <svg
       className="p-8 max-w-2xl max-h-2xl mx-auto"
       width="100%"
-      height="auto"
+      height="100%"
       viewBox="0 0 745 636"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -30,8 +30,8 @@ export default function NeonSkiSign() {
       <path
         d="M412 202L447.5 298.5"
         stroke="#C3D7E9"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <mask
         id="path-4-outside-2_7_16"
@@ -53,8 +53,8 @@ export default function NeonSkiSign() {
       <path
         d="M599.42 314.79L744.5 373.5"
         stroke="#C3D7E9"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <mask
         id="path-7-outside-3_7_16"
@@ -76,25 +76,25 @@ export default function NeonSkiSign() {
       <path
         d="M619.5 563.5H686.76"
         stroke="#C3D7E9"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <path
         d="M471.5 552.5H399.85"
         stroke="#C3D7E9"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <path
         d="M129.5 283.5L0.5 432.5"
         stroke="#C3D7E9"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <path
         d="M322 103C350.167 103 373 80.1665 373 52C373 23.8335 350.167 1 322 1C293.833 1 271 23.8335 271 52C271 80.1665 293.833 103 322 103Z"
         stroke="#C3D7E9"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
       />
       <mask
         id="path-13-outside-4_7_16"
