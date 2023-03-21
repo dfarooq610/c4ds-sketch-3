@@ -3,11 +3,6 @@ import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NewEnglandSkiResorts, SkiResort } from "../../../services/resorts";
 import getDistance from "geolib/es/getDistance";
-type Mata = any;
-
-function getMiles(meters: number) {
-  return meters * 0.000621371192;
-}
 
 type ResortReccomendation = {
   id: string;
@@ -20,18 +15,9 @@ type ResortReccomendation = {
   score?: number;
 };
 
-type SkiQuizQuery = {
-  latitude: number;
-  longitude: number;
-  priceRange: "$" | "$$" | "$$$";
-  hasEquipment: boolean;
-  isWeekendTrip: boolean;
-  travelPreference: 0 | 1 | 2;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Mata>
+  res: NextApiResponse<ResortReccomendation[]>
 ) {
   const {
     latitude,
@@ -42,73 +28,86 @@ export default async function handler(
     isWeekendTrip,
     travelPreference,
   } = req.query;
+  try {
+    const resortInfoForResults: any[] = [];
+    for (let i = 0; i < NewEnglandSkiResorts.length; i++) {
+      const resort = NewEnglandSkiResorts[i];
+      const [resortLatitude, resortLongitude] = resort.ll;
 
-  const resortInfoForResults: any[] = [];
-  for (let i = 0; i < NewEnglandSkiResorts.length; i++) {
-    const resort = NewEnglandSkiResorts[i];
-    const [resortLatitude, resortLongitude] = resort.ll;
+      // in an ideal world, we can call axios.get to the liftie api to get the lift count and open lifts,
+      // but the liftie api rate limits way sooner than we expected, so we unfortunately had to remove this feature
 
-    // in an ideal world, we can call axios.get to the liftie api to get the lift count and open lifts,
-    // but the liftie api rate limits way sooner than we expected, so we unfortunately had to remove this feature
+      // const resortInfo = await axios.get(
+      //   `https://cors.office.dataculturegroup.org/https://liftie.info/api/resort/${resort.id}`,
+      //   {
+      //     headers: {
+      //       origin:
+      //         process.env.NODE_ENV === "production"
+      //           ? "https://c4ds-sketch-3.app"
+      //           : "http://localhost:3000",
+      //     },
+      //   }
+      // );
 
-    // const resortInfo = await axios.get(
-    //   `https://cors.office.dataculturegroup.org/https://liftie.info/api/resort/${resort.id}`,
-    //   {
-    //     headers: {
-    //       origin:
-    //         process.env.NODE_ENV === "production"
-    //           ? "https://c4ds-sketch-3.app"
-    //           : "http://localhost:3000",
-    //     },
-    //   }
-    // );
+      // const { data } = resortInfo;
 
-    // const { data } = resortInfo;
+      // const [totalLifts, openLifts] = [
+      //   Object.keys(resortInfo.lifts.status).length,
+      //   data.lifts.stats.open,
+      // ];
 
-    // const [totalLifts, openLifts] = [
-    //   Object.keys(resortInfo.lifts.status).length,
-    //   data.lifts.stats.open,
-    // ];
-
-    const currentResortWeather = await axios.get(
-      `https://api.weatherapi.com/v1/current.json?key=${
-        process.env.WEATHER_API_APP_KEY
-      }&q=${resortLatitude.toFixed(4)},${resortLongitude.toFixed(4)}&aqi=no`
-    );
-    const { current } = currentResortWeather.data;
-
-    const resortReccomendation: ResortReccomendation = {
-      id: resort.id,
-      temperatureFahrenheit: current.temp_f,
-      visibilityMiles: current.vis_miles,
-      windSpeedMph: current.wind_mph,
-    };
-
-    let distance;
-    if (latitude !== undefined && longitude !== undefined) {
-      distance = getDistance(
-        { latitude: Number(latitude), longitude: Number(longitude) },
-        { latitude: Number(resortLatitude), longitude: Number(resortLongitude) }
+      const currentResortWeather = await axios.get(
+        `https://api.weatherapi.com/v1/current.json?key=${
+          process.env.WEATHER_API_APP_KEY
+        }&q=${resortLatitude.toFixed(4)},${resortLongitude.toFixed(4)}&aqi=no`
       );
-      resortReccomendation["distance"] = Number(getMiles(distance).toFixed(3));
-      resortReccomendation["score"] = getReccomendationScore(
-        resortReccomendation.temperatureFahrenheit,
-        resortReccomendation.visibilityMiles,
-        resortReccomendation.windSpeedMph,
-        resortReccomendation.distance,
-        priceRange,
-        hasEquipment,
-        isWeekendTrip,
-        resort
-      );
+      const { current } = currentResortWeather.data;
+
+      const resortReccomendation: ResortReccomendation = {
+        id: resort.id,
+        temperatureFahrenheit: current.temp_f,
+        visibilityMiles: current.vis_miles,
+        windSpeedMph: current.wind_mph,
+      };
+
+      let distance;
+      if (latitude !== undefined && longitude !== undefined) {
+        distance = getDistance(
+          { latitude: Number(latitude), longitude: Number(longitude) },
+          {
+            latitude: Number(resortLatitude),
+            longitude: Number(resortLongitude),
+          }
+        );
+        resortReccomendation["distance"] = Number(
+          getMiles(distance).toFixed(3)
+        );
+        resortReccomendation["score"] = getReccomendationScore(
+          resortReccomendation.temperatureFahrenheit,
+          resortReccomendation.visibilityMiles,
+          resortReccomendation.windSpeedMph,
+          resortReccomendation.distance,
+          Number(priceRange),
+          Boolean(hasEquipment),
+          Boolean(isWeekendTrip),
+          resort
+        );
+      }
+
+      resortInfoForResults.push(resortReccomendation);
     }
 
-    resortInfoForResults.push(resortReccomendation);
+    return res
+      .status(200)
+      .send(resortInfoForResults.sort((a, b) => b.score - a.score));
+  } catch (e) {
+    console.error(e);
+    res.status(500).send([]);
   }
+}
 
-  return res.status(200).send(resortInfoForResults.sort(
-    (a, b) => b.score - a.score
-  ));
+function getMiles(meters: number) {
+  return meters * 0.000621371192;
 }
 
 const getReccomendationScore = (
@@ -132,7 +131,7 @@ const getReccomendationScore = (
   const denominator =
     0.2 * distance + 2 * wind_mph + priceFactor + equipmentFactor;
 
-  console.log(numerator / denominator)
+  console.log(numerator / denominator);
 
   return numerator / denominator;
 };

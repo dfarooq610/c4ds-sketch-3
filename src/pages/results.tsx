@@ -16,7 +16,7 @@ export default function Results() {
   } = router.query;
   const [data, setData] = useState<any>(null);
 
-  const info = {
+  const params = {
     latitude,
     longitude,
     level,
@@ -28,15 +28,7 @@ export default function Results() {
 
   const fetchData = useCallback(async () => {
     const apiData = await axios.get("http://localhost:3000/api/curateResorts", {
-      params: {
-        latitude,
-        longitude,
-        level,
-        priceRange,
-        hasEquipment,
-        isWeekendTrip,
-        travelPreference,
-      },
+      params,
     });
     console.log(apiData);
     setData(apiData.data);
