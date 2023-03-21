@@ -4,7 +4,7 @@ import { Raleway } from "next/font/google";
 
 // pages/_app.js
 const rw = Raleway({
-  weight: ["400"],
+  weight: ["400", "700"],
   style: ["normal"],
   subsets: ["latin"],
   display: "swap",
