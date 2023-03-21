@@ -1,23 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { NewEnglandSkiResorts, SkiResort } from "../../../services/resorts";
+import { NewEnglandSkiResorts, RecommendedSkiResort, SkiResort } from "../../../services/resorts";
 import getDistance from "geolib/es/getDistance";
 
-type ResortReccomendation = {
-  id: string;
-  // liftCount: number;
-  // openLifts: number;
-  temperatureFahrenheit: number;
-  visibilityMiles: number;
-  windSpeedMph: number;
-  distance?: number;
-  score?: number;
-};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResortReccomendation[]>
+  res: NextApiResponse<RecommendedSkiResort[]>
 ) {
   const {
     latitude,
@@ -63,7 +53,7 @@ export default async function handler(
       );
       const { current } = currentResortWeather.data;
 
-      const resortReccomendation: ResortReccomendation = {
+      const resortReccomendation: RecommendedSkiResort = {
         id: resort.id,
         temperatureFahrenheit: current.temp_f,
         visibilityMiles: current.vis_miles,

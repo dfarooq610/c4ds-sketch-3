@@ -1,7 +1,9 @@
 import axios from "axios";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
+import { LoadingSpinner } from "../../components/results/LoadingSpinner";
+import ResortsList from "../../components/results/ResortsList";
+import { RecommendedSkiResort } from "../../services/resorts";
 
 export default function Results() {
   const router = useRouter();
@@ -14,7 +16,7 @@ export default function Results() {
     isWeekendTrip,
     travelPreference,
   } = router.query;
-  const [data, setData] = useState<any>(null);
+  const [resorts, setResorts] = useState<RecommendedSkiResort[] | null>(null);
 
   const params = {
     latitude,
@@ -27,13 +29,12 @@ export default function Results() {
   };
 
   const fetchData = useCallback(async () => {
-    const apiData = await axios.get("http://localhost:3000/api/curateResorts", {
+    const apiData = await axios.get("/api/curateResorts", {
       params,
     });
-    console.log(apiData);
-    setData(apiData.data);
+    setResorts(apiData.data);
   }, [
-    setData,
+    setResorts,
     latitude,
     longitude,
     level,
@@ -48,8 +49,15 @@ export default function Results() {
   }, [fetchData]);
 
   return (
-    <h1 className="text-slate-200 text-3xl w-screen flex flex-wrap">
-      {JSON.stringify(data)}
-    </h1>
+    <div className="flex flex-col min-w-screen min-h-screen">
+      {resorts ? (
+        <ResortsList
+          curated={Object.keys(router.query).length > 0}
+          resorts={resorts}
+        />
+      ) : (
+        <LoadingSpinner />
+      )}
+    </div>
   );
 }

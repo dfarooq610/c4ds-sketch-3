@@ -9,6 +9,17 @@ export type SkiResort = {
   summary: string;
 };
 
+export type RecommendedSkiResort = {
+  id: string;
+  // liftCount: number;
+  // openLifts: number;
+  temperatureFahrenheit: number;
+  visibilityMiles: number;
+  windSpeedMph: number;
+  distance?: number;
+  score?: number;
+};
+
 export const NewEnglandSkiResorts: SkiResort[] = [
   {
     id: "bolton-valley",

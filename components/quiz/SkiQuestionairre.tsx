@@ -25,7 +25,7 @@ export const SkiQuestionairre = ({
         >
           But first, a few questions about your history with skiing.
         </h1>
-        <hr className="bg-sky-400 h-1 mt-1 mb-3" />
+        <hr className="bg-sky-400 h-1 mt-1 mb-3 mx-8" />
       </header>
       <div className="flex flex-col justify-center items-center w-4/6 m-auto h-5/6">
         {userLocation.includes(Number.MIN_SAFE_INTEGER) ? (
