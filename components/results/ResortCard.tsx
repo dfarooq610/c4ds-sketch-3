@@ -43,6 +43,13 @@ export function ResortCard({ liveData, staticData }: ResortCardProps) {
             );
           })}
         </div>
+        <a
+          className="text-slate-500 text-sm text-right font-tiltNeon underline hover:text-sk-800"
+          href={`https://liftie.info/resort/${staticData.id}/`}
+        >
+          {/* special character is an arrow */}
+          Learn more on liftie.info
+        </a>
       </div>
     </div>
   );
