@@ -1,20 +1,23 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { NewEnglandSkiResorts } from "../../../services/resorts";
+import { NewEnglandSkiResorts, SkiResort } from "../../../services/resorts";
 import getDistance from "geolib/es/getDistance";
+type Mata = any;
 
-type Data = any;
+function getMiles(meters: number) {
+  return meters * 0.000621371192;
+}
 
 type ResortReccomendation = {
   id: string;
-  liftCount: number;
-  openLifts: number;
+  // liftCount: number;
+  // openLifts: number;
   temperatureFahrenheit: number;
   visibilityMiles: number;
   windSpeedMph: number;
   distance?: number;
-  recommendationScore?: number;
+  score?: number;
 };
 
 type SkiQuizQuery = {
@@ -28,76 +31,108 @@ type SkiQuizQuery = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Mata>
 ) {
-  const resortInfo = await fetch(`https://liftie.info/api/meta`)
-    .then((d) => console.log(d.json()))
-    .catch((e) => {
-      console.log(e.statusCode)
-      console.log(e);
-    });
+  const {
+    latitude,
+    longitude,
+    level,
+    priceRange,
+    hasEquipment,
+    isWeekendTrip,
+    travelPreference,
+  } = req.query;
 
-  res.send(200);
+  const resortInfoForResults: any[] = [];
+  for (let i = 0; i < NewEnglandSkiResorts.length; i++) {
+    const resort = NewEnglandSkiResorts[i];
+    const [resortLatitude, resortLongitude] = resort.ll;
+
+    // in an ideal world, we can call axios.get to the liftie api to get the lift count and open lifts,
+    // but the liftie api rate limits way sooner than we expected, so we unfortunately had to remove this feature
+
+    // const resortInfo = await axios.get(
+    //   `https://cors.office.dataculturegroup.org/https://liftie.info/api/resort/${resort.id}`,
+    //   {
+    //     headers: {
+    //       origin:
+    //         process.env.NODE_ENV === "production"
+    //           ? "https://c4ds-sketch-3.app"
+    //           : "http://localhost:3000",
+    //     },
+    //   }
+    // );
+
+    // const { data } = resortInfo;
+
+    // const [totalLifts, openLifts] = [
+    //   Object.keys(resortInfo.lifts.status).length,
+    //   data.lifts.stats.open,
+    // ];
+
+    const currentResortWeather = await axios.get(
+      `https://api.weatherapi.com/v1/current.json?key=${
+        process.env.WEATHER_API_APP_KEY
+      }&q=${resortLatitude.toFixed(4)},${resortLongitude.toFixed(4)}&aqi=no`
+    );
+    const { current } = currentResortWeather.data;
+
+    const resortReccomendation: ResortReccomendation = {
+      id: resort.id,
+      temperatureFahrenheit: current.temp_f,
+      visibilityMiles: current.vis_miles,
+      windSpeedMph: current.wind_mph,
+    };
+
+    let distance;
+    if (latitude !== undefined && longitude !== undefined) {
+      distance = getDistance(
+        { latitude: Number(latitude), longitude: Number(longitude) },
+        { latitude: Number(resortLatitude), longitude: Number(resortLongitude) }
+      );
+      resortReccomendation["distance"] = Number(getMiles(distance).toFixed(3));
+      resortReccomendation["score"] = getReccomendationScore(
+        resortReccomendation.temperatureFahrenheit,
+        resortReccomendation.visibilityMiles,
+        resortReccomendation.windSpeedMph,
+        resortReccomendation.distance,
+        priceRange,
+        hasEquipment,
+        isWeekendTrip,
+        resort
+      );
+    }
+
+    resortInfoForResults.push(resortReccomendation);
+  }
+
+  return res.status(200).send(resortInfoForResults.sort(
+    (a, b) => b.score - a.score
+  ));
 }
 
-// const shouldCurate = Object.keys(req.query).length > 0;
+const getReccomendationScore = (
+  temp_f: number,
+  vis_mi: number,
+  wind_mph: number,
+  distance: number,
+  priceRange: number,
+  hasEquipment: boolean,
+  isWeekendTrip: boolean,
+  resort: SkiResort
+) => {
+  const numerator = 5 * temp_f + 3 * vis_mi + 2 * 1;
 
-// const {
-//   latitude,
-//   longitude,
-//   level,
-//   priceRange,
-//   hasEquipment,
-//   isWeekendTrip,
-//   travelPreference,
-// } = req.query;
+  const priceFactor =
+    [0, 0.5, 1][priceRange] *
+    (isWeekendTrip ? resort.weekendTicketPrice : resort.weekdayTicketPrice);
+  const equipmentFactor = hasEquipment
+    ? 0
+    : [0.9, 0.7, 0.5][priceRange] * resort.averageRentalPrice;
+  const denominator =
+    0.2 * distance + 2 * wind_mph + priceFactor + equipmentFactor;
 
-// const resortIds = NewEnglandSkiResorts.map((resort) => resort.id);
+  console.log(numerator / denominator)
 
-// const resortInfoForResults: any[] = [];
-// for (let id in resortIds) {
-//   const resortInfo = await axios.get(`https://liftie.info/api/resort/palisades`);
-//   const { data } = resortInfo;
-//   res.send(data)
-
-// const [resortLatitude, resortLongitude] = data.ll;
-// const [totalLifts, openLifts] = [
-//   Object.keys(data.lifts.status).length,
-//   data.lifts.stats.open,
-// ];
-
-// const currentResortWeather = await axios.get(
-//   `https://api.weatherunlocked.com/api/current/${resortLatitude.toFixed(
-//     3
-//   )},${resortLongitude.toFixed(3)}?app_id=${
-//     process.env.WEATHER_UNLOCKED_APP_ID
-//   }&app_key=${process.env.WEATHER_UNLOCKED_APP_KEY}`
-// );
-
-// const { data } = currentResortWeather;
-
-// const resortReccomendation: ResortReccomendation = {
-//   id,
-//   liftCount: totalLifts,
-//   openLifts,
-//   temperatureFahrenheit: 1, // data.temp_f,
-//   visibilityMiles: 1, // data.vis_miles,
-//   windSpeedMph: 1, //data.windspd_mph,
-// };
-
-// let distance;
-// if (latitude && longitude) {
-//   distance = getDistance(
-//     { latitude: Number(latitude), longitude: Number(longitude) },
-//     { latitude: Number(resortLatitude), longitude: Number(resortLongitude) }
-//   );
-//   resortReccomendation.distance = distance;
-// }
-
-// resortInfoForResults.push(resortReccomendation);
-// }
-
-// return res.status(200).send(resortInfoForResults);
-
-// const resorts = await axios.get("https://liftie.info/api/meta");
-// res.status(200).json(resorts.data);
+  return numerator / denominator;
+};

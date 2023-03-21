@@ -38,7 +38,7 @@ export default function Quiz() {
         latitude: userLocation[0],
         longitude: userLocation[1],
         level: answers[0],
-        priceRange: answers[1],
+        priceRange: answers[1].length,
         hasEquipment: answers[2] === "Yes",
         travelPreference: questions[3].options.indexOf(answers[3]),
         isWeekendTrip: answers[4] === "During the weekend",

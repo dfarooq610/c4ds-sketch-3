@@ -15,6 +15,7 @@ export default function Results() {
     travelPreference,
   } = router.query;
   const [data, setData] = useState<any>(null);
+
   const info = {
     latitude,
     longitude,

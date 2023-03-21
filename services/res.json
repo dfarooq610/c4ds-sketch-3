@@ -1,0 +1,54 @@
+[
+  {
+    "id": "bolton-valley",
+    "name": "Bolton Valley",
+    "ll": [-72.84948, 44.421673]
+  },
+  {
+    "id": "bromley-mountain",
+    "name": "Bromley Mountain",
+    "ll": [-72.935013, 43.213402]
+  },
+  {
+    "id": "burke-mountain",
+    "name": "Burke Mountain",
+    "ll": [-71.91745, 44.587898]
+  },
+  { "id": "cannon", "name": "Cannon", "ll": [-71.698418, 44.156452] },
+  {
+    "id": "cranmore-mountain",
+    "name": "Cranmore",
+    "ll": [-71.116783, 44.055382]
+  },
+  { "id": "gunstock", "name": "Gunstock", "ll": [-71.360092, 43.551796] },
+  { "id": "jay-peak", "name": "Jay Peak", "ll": [-72.501701, 44.928837] },
+  { "id": "king-pine", "name": "King Pine", "ll": [-71.088127, 43.86063] },
+  { "id": "loon", "name": "Loon Mountain", "ll": [-71.625809, 44.056583] },
+  {
+    "id": "mad-river-glen",
+    "name": "Mad River Glen",
+    "ll": [-72.919006, 44.201653]
+  },
+  { "id": "pats-peak", "name": "Pats Peak", "ll": [-71.833412, 43.180679] },
+  {
+    "id": "ragged-mountain",
+    "name": "Ragged Mountain",
+    "ll": [-71.842003, 43.486305]
+  },
+  { "id": "saddleback", "name": "Saddleback", "ll": [-70.632965, 44.983387] },
+  { "id": "smuggs", "name": "Smugglers' Notch", "ll": [-72.78833, 44.589092] },
+  { "id": "stratton", "name": "Stratton", "ll": [-72.906303, 43.114017] },
+  { "id": "sugarbush", "name": "Sugarbush", "ll": [-72.879318, 44.145721] },
+  { "id": "sugarloaf", "name": "Sugarloaf", "ll": [-70.315147, 45.06728] },
+  
+  {
+    "id": "sunday-river",
+    "name": "Sunday River",
+    "ll": [-70.907394, 44.550358]
+  },
+  {
+    "id": "waterville",
+    "name": "Waterville Valley",
+    "ll": [-71.519989, 43.961613]
+  }
+]
